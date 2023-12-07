@@ -1,6 +1,5 @@
 "use client";
 
-import Home from "@/app/page";
 import { BotAvatar } from "@/components/botavatar";
 import { UserAvatar } from "@/components/useravatar";
 import axios from "axios";
@@ -18,6 +17,7 @@ import {
   LayoutDashboard,
   MessageSquare,
 } from "lucide-react";
+import Home from "../home/page";
 
 const PhotoPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -55,7 +55,7 @@ const PhotoPage = () => {
   }
   return (
     <Home>
-      <main className="w-full gap-8 flex flex-col  bg-[#111827] relative ">
+      <main className="w-full gap-8 flex flex-col  bg-[#001f58] relative ">
         <div className="w-full min-h-[60px] items-center py-2 flex gap-5 h-[60px] ps-6 text-white  fixed border-b border-b-white  ">
           {" "}
           {isLoading ? (
@@ -97,7 +97,7 @@ const PhotoPage = () => {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             type="text"
-            className="w-[100%] bg-[#111827] text-white focus:outline-none focus:border-transparent tracking-wide  "
+            className="w-[100%] bg-[#001f58] text-white focus:outline-none focus:border-transparent tracking-wide  "
             placeholder="Your message here..."
           />
 
