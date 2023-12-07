@@ -2,7 +2,7 @@ import { Configuration, OpenAIApi } from 'openai';
 import { NextResponse } from 'next/server';
 
 const config = new Configuration({
-  apiKey: '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',
+  apiKey: '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',
 });
 const openAI = new OpenAIApi(config);
 
@@ -27,7 +27,11 @@ export async function POST(req) {
       messages,
     });
 
-    return NextResponse.json(response.data.choices[0]);
+    // return NextResponse.json(response.data.choices[0]);
+    console.log(response.data.choices[0].message)
+    return NextResponse.json(response.data.choices[0].message);
+
+    // return NextResponse.json(response.data.data);
   } catch (error) {
     console.log("[CONVERSATION_ERROR]");
     return new NextResponse("Internal Error", { status: 500 });
