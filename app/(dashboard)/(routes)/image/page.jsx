@@ -34,6 +34,8 @@ const PhotoPage = () => {
     }
 
     try {
+      setNewMessage("");
+
       setPhotos([]);
 
       const response = await axios.post("/api/image", { newMessage });
@@ -42,7 +44,6 @@ const PhotoPage = () => {
 
       setPhotos(urls);
       setIsLoading(false);
-      setNewMessage("");
     } catch (error) {
       setIsLoading(false);
       setNewMessage("");
