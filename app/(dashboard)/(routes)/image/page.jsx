@@ -10,6 +10,7 @@ import { ClassValue, clsx } from "clsx";
 import { IoMdSend } from "react-icons/io";
 import Loading from "@/components/loading";
 import NoChats from "@/components/noChats";
+
 import {
   Code,
   Image,
@@ -17,9 +18,12 @@ import {
   LayoutDashboard,
   MessageSquare,
 } from "lucide-react";
-const ConversationPage = () => {
+import { Card, CardFooter } from "@/components/card";
+
+const PhotoPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [messages, setMessages] = useState([]);
+  const [photos, setPhotos] = useState([]);
+
   const [newMessage, setNewMessage] = useState("");
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -28,20 +32,17 @@ const ConversationPage = () => {
     if (!newMessage) {
       return;
     }
-    const userMessage = { role: "user", content: newMessage };
 
-    const newMessages = [...messages, userMessage];
     try {
-      setNewMessage("");
+      setPhotos([]);
 
-      const response = await axios.post("/api/conversation", {
-        messages: newMessages,
-      });
-      // const response = await axios.post('/api/conversation', { messages: 'what is a java' });
-      console.log(response);
+      const response = await axios.post("/api/image", { newMessage });
 
-      setMessages([...messages, userMessage, response.data]);
+      const urls = response.data.map((image) => image.url);
+
+      setPhotos(urls);
       setIsLoading(false);
+      setNewMessage("");
     } catch (error) {
       setIsLoading(false);
       setNewMessage("");
@@ -54,7 +55,7 @@ const ConversationPage = () => {
   }
   return (
     <Home>
-      <main className="w-full gap-8 flex flex-col relative bg-[#111827] relative ">
+      <main className="w-full gap-8 flex flex-col  bg-[#111827] relative ">
         <div className="w-full min-h-[60px] items-center py-2 flex gap-5 h-[60px] ps-6 text-white  fixed border-b border-b-white  ">
           {" "}
           {isLoading ? (
@@ -65,26 +66,23 @@ const ConversationPage = () => {
             </>
           ) : (
             <>
-              <MessageSquare />
-              <h1>Conversation</h1>
+              <ImageIcon />
+              <h1>Image Generation</h1>
             </>
           )}
         </div>
-        <section className="h-full px-3  overflow-y-scroll custom-scrollbar mt-[100px] w-[80%] m-auto">
-          <div className="">
-            {messages.length == 0 && <NoChats text={'Start Conversation'} />}
-            {messages.map((message) => (
-              <div
-                key={message.content}
-                className={cn(
-                  "p-4 w-full mb-4 flex  gap-8 rounded-lg  text-white items-center",
-                  message.role === "user"
-                    ? "bg-[#1d3557] border border-black/10"
-                    : "bg-[#274c77]"
-                )}
-              >
-                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <p className="text-sm w-[100%] ">{message.content}</p>
+        <section className="h-full px-3  mt-[100px] w-[90%] m-auto">
+            {photos.length == 0 && <NoChats text={'Search Image'} />}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
+            {photos.map((src) => (
+              <div key={src}>
+                <img className="rounded-lg" src={src} alt="" />
+                <button
+                  onClick={() => window.open(src)}
+                  className="text-white bg-slate-400 w-full mt-2 rounded-lg py-2"
+                >
+                  Download
+                </button>
               </div>
             ))}
           </div>
@@ -113,4 +111,4 @@ const ConversationPage = () => {
   );
 };
 
-export default ConversationPage;
+export default PhotoPage;
