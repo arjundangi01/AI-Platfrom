@@ -4,7 +4,7 @@
 import { BotAvatar } from "@/components/botavatar";
 import { UserAvatar } from "@/components/useravatar";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { ClassValue, clsx } from "clsx";
 import { IoMdSend } from "react-icons/io";
@@ -22,9 +22,20 @@ const ConversationPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const messageContainerRef = useRef(null);
+
   useEffect(() => {
     setMessages(JSON.parse(localStorage.getItem('conversationMessages')) || []);
-  },[])
+  }, [])
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+  const scrollToBottom = () => {
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTop =
+        messageContainerRef.current.scrollHeight;
+    }
+  };
   const onSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -76,7 +87,7 @@ const ConversationPage = () => {
             </>
           )}
         </div>
-        <section className="h-full px-3  overflow-y-scroll custom-scrollbar mt-[100px] w-[80%] m-auto">
+        <section ref={messageContainerRef} className="h-full px-3  overflow-y-scroll custom-scrollbar mt-[100px] w-[80%] m-auto">
           <div className="">
             {messages.length == 0 && <NoChats text={'Start Conversation'} />}
             {messages.map((message) => (
