@@ -4,7 +4,7 @@ import Home from "@/app/page";
 import { BotAvatar } from "@/components/botavatar";
 import { UserAvatar } from "@/components/useravatar";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { ClassValue, clsx } from "clsx";
 import { IoMdSend } from "react-icons/io";
@@ -21,6 +21,9 @@ const ConversationPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  useEffect(() => {
+    setMessages(JSON.parse(localStorage.getItem('conversationMessages')) || []);
+  },[])
   const onSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -33,6 +36,7 @@ const ConversationPage = () => {
     const newMessages = [...messages, userMessage];
     try {
       setNewMessage("");
+      
 
       const response = await axios.post("/api/conversation", {
         messages: newMessages,
@@ -41,6 +45,7 @@ const ConversationPage = () => {
       console.log(response);
 
       setMessages([...messages, userMessage, response.data]);
+      localStorage.setItem('conversationMessages',JSON.stringify([...messages,userMessage,response.data]))
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -93,7 +98,7 @@ const ConversationPage = () => {
           <input
             onKeyDown={(e) => {
               if (e.key == "Enter") {
-                onSubmit();
+                onSubmit(e);
               }
             }}
             value={newMessage}

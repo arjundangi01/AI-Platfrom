@@ -4,7 +4,7 @@ import Home from "@/app/page";
 import { BotAvatar } from "@/components/botavatar";
 import { UserAvatar } from "@/components/useravatar";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { ClassValue, clsx } from "clsx";
 import { IoMdSend } from "react-icons/io";
@@ -18,13 +18,13 @@ import {
   LayoutDashboard,
   MessageSquare,
 } from "lucide-react";
-import { Card, CardFooter } from "@/components/card";
 
 const PhotoPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [photos, setPhotos] = useState([]);
 
   const [newMessage, setNewMessage] = useState("");
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -91,7 +91,7 @@ const PhotoPage = () => {
           <input
             onKeyDown={(e) => {
               if (e.key == "Enter") {
-                onSubmit();
+                onSubmit(e);
               }
             }}
             value={newMessage}

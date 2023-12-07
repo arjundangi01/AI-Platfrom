@@ -28,6 +28,9 @@ const CodePage = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+  useEffect(() => {
+    setMessages(JSON.parse(localStorage.getItem("codeMessages")) || []);
+  }, []);
 
   const onSubmit = async (e) => {
     e?.preventDefault();
@@ -49,6 +52,10 @@ const CodePage = () => {
       console.log(response);
 
       setMessages([...messages, userMessage, response.data]);
+      localStorage.setItem(
+        "codeMessages",
+        JSON.stringify([...messages, userMessage, response.data])
+      );
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -100,25 +107,27 @@ const CodePage = () => {
                     : "bg-[#274c77]"
                 )}
               >
-                    {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                    <div className="w-[100%]" >
-
-                <ReactMarkdown
-                  components={{
-                    pre: ({ node, ...props }) => (
-                      <div className="overflow-auto w-full my-2  bg-black/10 p-2 rounded-lg">
-                        <pre {...props} />
-                      </div>
-                    ),
-                    code: ({ node, ...props }) => (
-                      <code className="bg-black/25 rounded-lg p-1" {...props} />
-                    ),
-                  }}
-                  className="text-sm overflow-hidden leading-7"
-                >
-                  {message.content || ""}
-                </ReactMarkdown>
-                    </div>
+                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
+                <div className="w-[100%]">
+                  <ReactMarkdown
+                    components={{
+                      pre: ({ node, ...props }) => (
+                        <div className="overflow-auto w-full my-2  bg-black/10 p-2 rounded-lg">
+                          <pre {...props} />
+                        </div>
+                      ),
+                      code: ({ node, ...props }) => (
+                        <code
+                          className="bg-black/25 rounded-lg p-1"
+                          {...props}
+                        />
+                      ),
+                    }}
+                    className="text-sm overflow-hidden leading-7"
+                  >
+                    {message.content || ""}
+                  </ReactMarkdown>
+                </div>
               </div>
             ))}
           </div>
@@ -126,7 +135,6 @@ const CodePage = () => {
         <section className="border-b w-[80%] m-auto  mb-5 flex gap-8 items-center px-5 h-[4rem] self-end bottom-0">
           <input
             onKeyDown={(e) => {
-             
               if (e.key == "Enter") {
                 onSubmit();
               }

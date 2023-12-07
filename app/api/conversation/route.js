@@ -2,7 +2,8 @@ import { Configuration, OpenAIApi } from 'openai';
 import { NextResponse } from 'next/server';
 
 const config = new Configuration({
-  apiKey: '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',
+  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+  
 });
 const openAI = new OpenAIApi(config);
 
