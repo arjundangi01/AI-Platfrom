@@ -77,7 +77,7 @@ const CodePage = () => {
   }
   return (
     <Home>
-      <main className="w-full gap-8 flex flex-col relative bg-[#001f58] relative ">
+      <main className="w-[85%] md:w-full gap-8 flex flex-col  bg-[#001f58] relative ">
         <div className="w-full min-h-[60px] items-center py-2 flex gap-5 h-[60px] ps-6 text-white  fixed border-b border-b-white  ">
           {" "}
           {isLoading ? (
@@ -95,7 +95,8 @@ const CodePage = () => {
         </div>
         <section
           ref={messageContainerRef}
-          className="h-full px-3  overflow-y-scroll custom-scrollbar mt-[100px] w-[80%] m-auto"
+          className="h-full px-1 md:px-3
+            overflow-y-scroll custom-scrollbar mt-[100px]  w-[100%] md:w-[80%] m-auto"
         >
           <div className="">
             {messages.length == 0 && <NoChats text={"Ask For Code"} />}
@@ -103,18 +104,18 @@ const CodePage = () => {
               <div
                 key={message.content}
                 className={cn(
-                  "p-4 w-full mb-4 flex  gap-8 rounded-lg  text-white items-start",
+                  "p-2 md:p-4 w-full mb-4 flex  gap-4 md:gap-8 rounded-lg  text-white items-start",
                   message.role === "user"
                     ? "bg-[#1d3557] border border-black/10"
                     : "bg-[#274c77]"
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <div className="w-[100%]">
+                <div className="w-[100%] overflow-hidden ">
                   <ReactMarkdown
                     components={{
                       pre: ({ node, ...props }) => (
-                        <div className="overflow-auto w-full my-2  bg-black/10 p-2 rounded-lg">
+                        <div className="overflow-auto w-full my-2  bg-black/10 p-2  rounded-lg">
                           <pre {...props} />
                         </div>
                       ),
@@ -134,7 +135,7 @@ const CodePage = () => {
             ))}
           </div>
         </section>
-        <section className="border-b w-[80%] m-auto  mb-5 flex gap-8 items-center px-5 h-[4rem] self-end bottom-0">
+        <section className="border-b w-[80%] md:w-[80%] m-auto  mb-5 flex gap-8 items-center px-2 md:px-5 h-[4rem] self-end bottom-0">
           <input
             onKeyDown={(e) => {
               if (e.key == "Enter") {
