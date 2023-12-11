@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Montserrat } from "next/font/google";
-
+import { UserButton } from "@clerk/nextjs";
 import {
   Code,
   Image,
@@ -87,6 +87,10 @@ const Sidebar = () => {
             </Link>
           ))}
         </div>
+      </div>
+      <div className=" px-3" >
+
+        <UserButton afterSignOutUrl="/" />
       </div>
     </div>
   );
