@@ -13,6 +13,7 @@ export const FreeCounter =  ({
 //   const proModal = useProModal();
 //   const proModal = useProModal();
 //   const proModal = useProModal();
+//   const proModal = useProModal();
 
   useEffect(() => {
     setMounted(true);
