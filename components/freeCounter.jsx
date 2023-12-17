@@ -10,6 +10,9 @@ export const FreeCounter =  ({
 }) => {
   const [mounted, setMounted] = useState(false);
 //   const proModal = useProModal();
+//   const proModal = useProModal();
+//   const proModal = useProModal();
+//   const proModal = useProModal();
 
   useEffect(() => {
     setMounted(true);
