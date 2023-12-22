@@ -1,10 +1,7 @@
 import { Configuration, OpenAIApi } from "openai";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
-// import checkSubscription from '@/lib/subscription';
-import checkSubscription from "@/lib/subscription";
-import { checkApiLimit, incrementApiLimit } from "@/lib/api-limit";
-import { getPrismaInstance } from "@/prisma/prismadb";
+
 
 const config = new Configuration({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
@@ -31,25 +28,15 @@ export async function POST(req) {
     if (!messages) {
       return new NextResponse("Messages are required", { status: 400 });
     }
-    const freeTrial = await checkApiLimit();
-    const isPro = await checkSubscription();
+    
 
-    if (!freeTrial && !isPro) {
-      console.log("free trial", freeTrial , isPro );
-      return new NextResponse(
-        "Free trial has expired. Please upgrade to pro.",
-        { status: 403 }
-      );
-    }
+    
     const response = await openAI.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages,
     });
 
-    // console.log(response.data.choices[0].message)
-    if (!isPro) {
-      await incrementApiLimit();
-    }
+   
     return NextResponse.json(response.data.choices[0].message);
 
     // return NextResponse.json({data:["hi"]});
