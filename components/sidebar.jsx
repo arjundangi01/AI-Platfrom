@@ -15,9 +15,7 @@ import {
 
 } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { getApiLimitCount } from "@/lib/api-limit";
-import checkSubscription from "@/lib/subscription";
-import { FreeCounter } from "./freeCounter";
+
 
 const poppins = Montserrat({ weight: "600", subsets: ["latin"] });
 const Sidebar =  () => {
@@ -94,7 +92,6 @@ const Sidebar =  () => {
       <div className=" px-3" >
           
         <UserButton afterSignOutUrl="/" />
-        <FreeCounter />
       </div>
     </div>
   );
